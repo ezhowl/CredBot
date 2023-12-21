@@ -1,102 +1,72 @@
-# Credbot
+# credBot
+Developed by Emilie Zhang, Alexa Halim, and Jennifer Long from Wellesley College.
 
-Welcome to Credbot! This is a project developed by Emilie Zhang, Alexa Halim, and Jennifer Long in Wellesley College's CS366 course. 
+## Abstract
+Web literacy, and specifically the ability to discern website credibility, is increasingly important in the age of highly accessible information on the Internet. While credibility checking tools exist, they often require the user to be proactive about checking potentially suspicious websites. CredBot is a Chrome extension chatbot that automates the credibility-checking process. It presents the credibility of a website with credibility signals and also warns about sensitive topics or low-credibility websites. Users are able to converse with the chatbot and understand the reasoning behind credibility measures. This version of CredBot was iteratively created until it achieved moderate capabilities. A working prototype was then tested on its effectiveness for users in a pilot study. Overall, the promising findings suggest that with refinement to the underlying prompt engineering powering the chatbot and continual design iterations, CredBot will be able to improve users’ web literacy when searching the web.
+
+## Introduction
+With factors such as biased perspectives or deeply embedded ads that undermine the reliability and trustworthiness of its content, it is difficult to discern website credibility. The average web user often expects a streamlined search query process, but existing methods of verifying a website’s credibility are cumbersome and only employed at the user’s discretion [8]. Because many users don’t have a firm understanding on what makes a website credible, if the credibility checking tool relies on the user proactively entering a website they find suspicious, all websites users falsely deem trustworthy escape scrutiny.
+
+To solve these issues, we propose a conversational user interface Chrome extension that automates and customizes the credibility-checking process as a latent assistant [4]. Our artifact will primarily
+detect when users search up sensitive topics (or topics prone to misinformation) or websites with low credibility, and provide credibility warnings to deter the consumption of misinformation and
+converse with the user and provide the reasoning behind warnings or the credibility measures chosen based on Wellesley’s CredLab research [1].
+Our tool serves as education-on-demand on the credibility and trustworthiness of websites. Those who surf the web can benefit through our tool that prompts consistent consideration of credibility criterias that determine a website’s trustworthiness. The customization and non-intrusive design of our tool additionally places more control into the user without placing burdens on the user to check website credibility, thus encouraging user-retention, trust in our tool, and the continuous development of web literacy [5, 7, 9].
+
+CredBot can be compared to existing credibility tools and chatbots for its functions and design. Bing Chat is a similar chatbot embedded in the web-browsing experience for users [3]. While Bing Chat is a general companion for search engines and would require specific prompting to evaluate a website’s credibility, it similarly is able to answer questions about the page the user is on. NewsGuard likewise provides credibility ratings, specifically for news and information websites [6]. Their ratings were created by “trained journalists'' based on nine journalistic criteria, for which each site received a trust score and “Nutrition Label” review. While CredBot will not generate a credibility score for users, as we hope to encourage conversations with the chatbot for development of web literacy, CredBot will produce a credibility evaluation in a manner similar to NewsGuard’s nutrition label. CredBot builds upon the credibility-checking capabilities of existing tools such as NewsGuard in an innovative chatbot Chrome extension format similar to Bing Chat in order to serve as a helpful educational tool in the web-searching process.
+
+By evaluating the effectiveness of a developing tool, such as CredBot, which utilizes LLM automation and customizes its evaluation of a website’s credibility according to credibility signal criteria for users, we aim to create a tool which is user-friendly and non-intrusive without compromising its effectiveness [7, 9]. A vision of a future exists in which LLM will be integrated into the way we surf the web [2]. Our study provides key insights for this vision through demonstration of how the LLM integration can function as both an educational resource and safety measure as users navigate an increasingly complex web.
+
+## Implementation & Design Process
+### HTML, CSS, and JavaScript Implementation
+JavaScript is the backbone of the chatbot and was used because of it being a standard for developing Chrome extensions. It enables dynamic content manipulation and user interaction handling within the browser environment. The scripts chatbot4.js and contentScript.js primarily use JavaScript for scripting behavior, handling events, and interacting with web pages, and are responsible for essential functionalities in the extension such as responding to user actions, manipulating web page content, and communicating with external APIs like OpenAI's GPT-4. For the structure of the chatbot interface, HTML was used in conjunction with CSS following the format of our low-fidelity sketch. This integration of HTML and CSS ensures the chatbot is not only functional but also aesthetically appealing and user-friendly. Upon initialization, our extension injects the chatbot interface directly into the web page's DOM. This process involves creating and appending HTML elements, styling them with CSS, and activating JavaScript event listeners.
+
+### API Integration with OpenAI's GPT-4 & Iterations
+The extension integrates with OpenAI's GPT-4 API, a crucial element for enabling advanced natural language processing and machine learning capabilities. This integration allows the chatbot to generate intelligent, context-aware responses and conduct credible website evaluations. The API's sophisticated algorithms analyze user inputs and website content, aiding in delivering accurate and relevant information in response to user queries. Rrapid iteration was needed for the integration of GPT-4 to have the correct capabilities for Credbot. The first step was ensuring that OpenAI’s API was successfully connected to our chrome extension, and that it was generating context-aware responses through GPT-4’s framework. However, this version of the chatbot did not know the URL of the website it was on, as the public version of OpenAI's API, including ChatGPT, does not currently have the capability to browse the internet. Therefore, for the second iteration, the URL of the website the user was currently on was retrieved and passed as a user prompt to our chatbot. Because the public version of OpenAI’s API cannot perform live searches and access internet content from a URL, the inner text of the web page also had to be passed to our chatbot in order for it to perform analyses on its contents.
+
+### Browser Extension Framework
+Manifested in the manifest.json file, the extension is tailored for Chrome browsers, following the Manifest V3 structure. This structure governs the extension's permissions, ensuring secure access to necessary resources like active tabs and external APIs. It also manages the injection of scripts and resources into web pages, facilitating the seamless integration of the chatbot into the user's browsing experience without disrupting the functionality of the web pages.
+
+### Prompt Engineering for GPT-4 Integration
+Prompt engineering, in the context of this chatbot's integration with OpenAI's GPT-4 API, is a critical aspect of the technology overview.  For CredBot, the system prompt informed the GPT model that “You are a professional assistant meant to help users determine the credibility of the website they are currently on” and gave specific instructions on how to format and generate their credibility evaluation based. These evaluations are based on the url link and webpage’s inner html that is fed to the model as a user prompt.
+
+## CredBot
+<img width="1512" alt="Screenshot 2023-12-20 at 9 35 04 PM" src="https://github.com/alexamichela/credBot/assets/111940928/5e5d72cb-01c0-4a5d-bfac-320022087b28">
+<img width="1512" alt="Screenshot 2023-12-20 at 9 35 16 PM" src="https://github.com/alexamichela/credBot/assets/111940928/e2322dfe-4409-4f19-beb3-5d0e36a1718f">
 
 
-# User Study
-## Design
-### Overview
-We conducted an empirical pilot study of 20 participants ages 18-24 varying in gender, sex, and concentration of study, though skewing towards female and CS or CS-adjacent students. All participants were provided a consent form which required a verbal consent for participation in our study; they were additionally informed of their right to withdraw at any point before, during, or after their participation.
+### Initialization and Activation
+CredBot activates based on URL patterns, ensuring it does not interfere with or load on websites such as personal emails. The Chrome extension will appear on the bottom right corner of the webpage as a permanent pop-up window. Once CredBot evaluates the webpage’s credibility, the pop-up window notifies the user and invites them to view CredBot’s results with a “see more” button. If the webpage was deemed to have low credibility, a red warning banner will accompany this notification, and if it was deemed to have medium credibility, a yellow warning banner will accompany this notification.
 
-### Measuring and Comparing User Web Literacy
-To evaluate CredBot’s efficacy on changing user web literacy, each participant independently filled a pre-study survey measuring their web literacy on a nominal scale through agreement with statements (e.g. “I usually check an article author's credentials”) and term familiarity (e.g. “promoted content” or “hyperlinks”). For agreement-with statements, users indicated how well the statement describes them on a five-point scale from “Strongly Disagree” to “Strongly Agree.” Users noted their familiarity with terms on a four-point scale from “Not familiar at all” to “Very familiar.” Our selected terms and statements, as seen in Figure 5 and 6, corresponded to selected credibility signals so we could measure quantitative changes in user self-reported web literacy after they interacted with CredBot. At the end of our study session, participants filled out a survey containing identical web literacy terms and statements so that we could observe any quantitative changes in their scores.
+### Sensitive Information Alert System
+The chatbot is equipped with a feature to detect and warn users about whether or not medical information is present on a webpage, due to its sensitive nature. By scanning for specific keywords and phrases related to health and medicine, the chatbot can alert users to take caution and advise consulting healthcare professionals for accurate information. It is presented as a blue warning banner at the top of the pop-up window once the credibility evaluation is generated. This feature enhances the chatbot's utility in safeguarding user health and safety.
 
-### User-Perceived Website Credibility Ratings Before and After CredBot Interaction
-During a 45 minute study session with a researcher, users visited two sets of four websites on a Google search results page prototype on Figma with hardcoded results to ensure visual consistency. Each set of websites correspond to one of two hypothetical search queries: "is the COVID-19 vaccine safe?” or “how to increase productivity?” In each set, we selected two websites from two domains rated either low or high in credibility by our selected signals’ criteria (i.e. 1 set consists of 4 websites: 1A, 2A, 1B, and 2B selected from domains A and B); the four domains we selected were the Center for Disease Control (CDC) and Natural News for the COVID query, and British Broadcasting Channel (BBC) Science Focus and Chanty for productivity query. Participants were first asked to visit two specified websites, one from each domain, while being allowed to Google search or explore the website for two minutes, then to fill a survey rating each site’s credibility and providing their rationale. Users were asked to rate each website's credibility as “Not credible at all,” “Somewhat credible,” or “Very credible”. Afterwards, participants visited the remaining two websites from the two domains with CredBot activated. They could not Google search or explore the website further, but were allowed to read CredBot’s initial credibility rating and prompt the chatbot for further information and clarification. Participants would fill an identical survey ranking website credibility afterwards so we could measure any changes in user-perceived website credibility.  In particular, we hoped to see that users' credibility rankings for high-credibility websites, such as BBC Focus and CDC, increased after using CredBot. Conversely, we hoped to see a decrease in users' credibility rankings for low-credibility websites, such as Chanty and Natural News.
+### User-AI Interaction Mechanics
+User interaction with the chatbot is facilitated through a text input field and a send button. These elements capture and process user messages, which are then displayed within the chat interface. JavaScript's event handling mechanisms monitor these inputs, ensuring that user queries are promptly captured and responded to. In connection to the OpenAI API, JavaScript’s asynchronous communication patterns, like fetch API and promises, are employed to send requests and handle responses. This design enables an interactive and continuous dialogue between the user and the chatbot.
 
-Because the public version of OpenAI’s API does not support the analysis or interpretation of images and because of the difficulties of parsing a webpage’s innerHTML, CredBot was not able to access certain information such as relatively obscure author credentials and visual ad volume. This limitation necessitated hardcoding for inaccessible information and overall credibility rating in our prompt engineering in order to produce consistent results and responses for this particular user study.
+### Credibility Assessment Functionality
+One of the chatbot's primary functions is to assess the credibility of websites. This is achieved by analyzing website content against predefined criteria developed by Professor Eni Mustafaraj’s Credibility Lab, including disclosure of authorship, disclosure of ownership, volume of ads, volume of promoted content, and type of organization (non-profit, for-profit, governmental etc.) [1]. The chatbot then displays an assessment message, categorized as low, medium, or high credibility, informing users about the potential trustworthiness of the content they are viewing, according to these five credibility signals.
 
-## Thematic analysis
-![Qualitative analysis thematic map](https://github.com/alexamichela/credBot/assets/106221079/71922ef1-9877-4a3d-bbfb-15a437905205)
+### Aesthetic and Responsive Design
+The chatbot's aesthetic appeal and responsive design are achieved through CSS styling. The design ensures that the chatbot interface is not only visually pleasing but also adaptable to various screen sizes and user interactions. The use of modern CSS features like flexbox and media queries contributes to a fluid and responsive user experience, accommodating a wide range of devices and display environments.
 
-Based on observed interactions and surveys, we identified two major areas of want users have for CredBot: education and assistance (Figure 7). As an on-demand education tool, upon CredBot’s initial credibility rating users' subsequent prompts frequently indicated a want for CredBot to define specific signal meanings and elaborate on the signal’s contextual application to a given webpage, and or the signals’ relevance to website credibility. Given CredBot’s responses, participants would express higher trust in both the chatbot’s credibility rating, as well as confidence in their own initial impressions of a given domain if it aligned with CredBot’s.
+## Future Work
+Future work will focus on enhancing CredBot's user interface, making it more aesthetically pleasing and intuitive. This improvement aims to foster greater user engagement and satisfaction. Assessing the consistency of CredBot's responses is also a crucial step forward, ensuring reliability and trustworthiness in its assessments. With more intensive prompt engineering, we will eliminate the need to hard-code credibility evaluations for websites and specify exactly how CredBot should apply credibility signal criteria for a website’s credibility evaluation. Furthermore, with more robust parsing of the innerHTML of a webpage, we may be able to systemically pass in information regarding ads, hyperlinks, and text content beyond the current passing of only the inner text. A long-term study with a diverse user base is envisaged to gain deeper insights into CredBot's long-term usability and effectiveness. Such a study will be invaluable in understanding the evolving dynamics of user interaction with AI tools for information assessment. Further, enhancing the AI model's accuracy and addressing emerging privacy concerns will be pivotal in ensuring CredBot's relevance and efficacy in real-world scenarios.
 
-“[CredBot] solidified my opinion of this site as less credible. It gave a few more reasons to be skeptical of the site than I had thought of before interacting with credbot” (Participant 16).
+## References
+[1] Ace Wang, Liz Maylin De Jesus Sanchez, Anya Wintner, Yuanxin Zhu, and Eni Mustafaraj. 2023. Assessing Google Search’s New Features in Supporting Credibility judgments of Unknown Websites. In Proceedings of the 2023 Conference on Human Information Interaction and Retrieval (CHIIR '23). Association for Computing Machinery, New York, NY, USA, 303–307. https://doi-org.ezproxy.wellesley.edu/10.1145/3576840.3578277
 
-In addition to signal application on a given webpage, participants often wanted CredBot to provide further information not immediately obvious on the webpage or would otherwise require further external research. In response to this need, participants appreciated the expediency of CredBot’s access and summary of such information.
+[2] Azeem Azhar. 2023. Azeem on AI: Are Large Language Models the Future of the Web? Podcast. (24 May 2023. Retrieved October 15, 2023 from https://hbr.org/podcast/2023/05/azeem-on-ai-are-large-language-models-the-future-of-the-web
 
-“I liked how it told me about the owner of the website and writer of the posts, additional information that I would not be able to conveniently get unless I did a bit of a few searches myself” (Participant 18).
+[3] Bing. [n. d.]. Bing Chat. https://www.microsoft.com/en-us/edge/features/bing-chat?form=MA13FJ
 
-In general, participant satisfaction often relied on the consistency and scope of CredBot’s responses. More specifically, they expected CredBot’s responses to be consistent throughout the conversation and present its text in a digestible manner. Structurally, participants suggested improvements CredBot could make in its response presentation (i.e. separate and or truncate its responses instead of presenting a large block of text). All in all, participants expressed a high likelihood of utilizing a more developed CredBot or similar tools for everyday usage and for task-specific purposes such as academic research.
+[4] Demetris Paschalides, Alexandros Kornilakis, Chrysovalantis Christodoulou, Rafael Andreou, George Pallis, Marios Dikaiakos, and Evangelos Markatos. 2019. Check-It: A plugin for Detecting and Reducing the Spread of Fake News and Misinformation on the Web. In IEEE/WIC/ACM International Conference on Web Intelligence (WI '19). Association for Computing Machinery, New York, NY, USA, 298–302. https://doi-org.ezproxy.wellesley.edu/10.1145/3350546.3352534
 
-From these survey results, we found promising results of the effectiveness of CredBot in increasing users’ web literacy.
+[5] Farnaz Jahanbakhsh, Yannis Katsis, Dakuo Wang, Lucian Popa, and Michael Muller. 2023. Exploring the Use of Personalized AI for Identifying Misinformation on Social Media. In Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems (CHI '23). Association for Computing Machinery, New York, NY, USA, Article 105, 1–27. https://doi-org.ezproxy.wellesley.edu/10.1145/3544548.3581219
 
-## Methods for Data Analysis
-In order to discover whether there was a significant difference in users' perceived credibility of websites and overall web literacy before and after using CredBot, we will analyze both the quantitative and qualitative elements of pre- and post-study surveys.
+[6] NewsGuard Ratings. [n. d.]. NewsGuard. https://www.newsguardtech.com/solutions/newsguard/
 
-### Perceived Website Credibility
-In order to analyze users' credibility rankings for the given websites, we intended to conduct paired t-tests in order to determine if there were significant differences between the rankings before and after the study. In particular, we hoped to see that users' credibility rankings for high-credibility websites, such as BBC Focus and CDC, increased after using CredBot. Conversely, we hoped to see a decrease in users' credibility rankings for low-credibility websites, such as Chanty and Natural News.
+[7] Pavel Smutny and Petra Schreiberova. Chatbots for learning: A Review of educational chatbots for the Facebook Messenger. Computers & Education 151 (2020), 103862. https://doi.org/10.1016/j.compedu.2020.103862
 
-In order to conduct a paired t-test, we had to check that the paired t-test assumptions are met:
-1. the data is paired: this is true for all of the data because users supplied credibility rankings both before and after using CredBot
-2. big sample size: Our sample size is only 21, so we so must check that the differences of pairs follow a Normal distribution
+[8] The Mind Online. 2019. (May 2019). Fake News: Finding It, Fighting It. Podcast. Retrieved October 15, 2023 from https://open.spotify.com/episode/5cAKhM3YlJryRUxLBL3lvS?si=536a97ffc60a43fa
 
-In order to check that the differences of pairs follow a Normal distribution, we conducted a Shapiro-Wilk normality test on the paired differences. Because the p-values for all four tests for each website were approximately 0, we have sufficient evidence to reject the null hypothesis that the data are normally distributed. Thus, we conducted a Paired Samples Wilcoxon Test instead.
-
-### Familiarity with Related Credibility Terms
-In order to analyze users' familiarity with credibility-related terms, we similarly intended to conduct paired t-tests in order to determine if there were significant differences between the familiarity before and after the study. We conducted the same Shapiro-Wilk normality test to determine if we could conduct the paired-tests. For 9/10 terms, we had to conduct the paired Wilcoxon test. "Author credentials" was the only term we could conduct a paired t-test for.
-
-### Identification with Internet Use Habits
-In order to analyze users' identification with internet use habits, we similarly intended to conduct paired t-tests in order to determine if there were significant differences between the identification before and after the study. We conducted the same Shapiro-Wilk normality test to determine if we could conduct the paired-tests. For 11/13 statements, we had to conduct the paired Wilcoxon test. "Author credentials" was the only term we could conduct a paired t-test for. The 2 statements where we conducted a paired t-test were:
-1. Whether a website's URL contains "HTTPS" affects how much I trust its content.
-2. I usually check an article author's credentials.
-## Results
-### Perceived Website Credibility for Productivity Websites
-![boxplotBBC](https://github.com/alexamichela/credBot/assets/111940928/3aaae2e0-a40f-40e6-a424-5717a7f1636d)
-
-Mean(Before) = 2.75
-
-Mean(After) = 2.9
-
-Paired Wilcoxon Test p-value = 0.1489
-
-As the boxplot and means of users' credibility rankings show, there seems to be an increase in perceived credibility of BBC Focus after using CredBot. However, the paired Wilcoxon test's p-value says we do not have enough evidence to say that there is a significant difference.
-
-![boxplotChanty](https://github.com/alexamichela/credBot/assets/111940928/f84ed7b9-14c3-4447-82b6-f5965780b441)
-
-Mean(Before) = 1.65
-
-Mean(After) = 1.4
-
-Paired Wilcoxon Test p-value = 0.0726
-As the boxplot and means of users' credibility rankings show, there seems to be a decrease in perceived credibility of Chanty after using CredBot. However, the paired Wilcoxon test's p-value says we do not have enough evidence to say that there is a significant difference.
-### Perceived Website Credibility for COVID Websites
-![boxplotCDC](https://github.com/alexamichela/credBot/assets/111940928/80f195a7-7e44-4d65-be83-e91dde51837d)
-
-Mean(Before) = 2.9
-
-Mean(After) = 2.9
-
-Paired Wilcoxon Test p-value = 1
-
-There is no recognizable difference in users' credibility rankings of CDC after using CredBot, which might be attributed to the users' high credibility of CDC before CredBot. It would not be very possible for users' perceived credibility of CDC to improve, considering their initial rankings.
-
-![boxplotNaturalNews](https://github.com/alexamichela/credBot/assets/111940928/a4396f54-a7a4-4a8d-a0be-cbe999a0c424)
-
-Mean(Before) = 1.25
-
-Mean(After) = 1.1
-
-Paired Wilcoxon Test p-value = 0.3741
-
-As the boxplot and means of users' credibility rankings show, there seems to be a decrease in perceived credibility of Natural News after using CredBot. However, the paired Wilcoxon test's p-value says we do not have enough evidence to say that there is a significant difference.
-### Familiarity with Related Credibility Terms
-We found that 9/10 terms had a mean increase in user familiarity with the term after using CredBot. The one term that didn't have a mean increase was "Website Domain," and the mean remained constant after using CredBot. Out of the 9 terms, only "Hyperlinks" had a statistically significant difference with a paired Wilcoxon test p-value of 0.04771.
-### Identification with Internet Use Habits
-We found that 11/13 statements had a mean increase in users’ identification after using CredBot. Only 6 of those 11 statements had a statistically significant increase. The six statements were:
-1. I care about which organization owns the websites I visit.
-2. I trust websites with domains such as "gov" or "org" more compared to websites with domains like "com" or "net".
-3. How well-known an author is affects how much I trust their writing.
-4. I usually check an article author's credentials.
-5. The number of ads on a website affects how much I trust its content.
-6. Whether a website's owner/organization is non-profit or for-profit affects how much I trust the website.
+[9] The Radical AI Podcast. 2020. Emoji Design, White Accountability, and the Ethical Future of Chatbots with Miriam Sweeney. Podcast. (June 2020). Retrieved October 15, 2023 from https://open.spotify.com/episode/48DjWEX2tf2nIPvvWZvtAC?si=9632e3cfd5034808
