@@ -1,6 +1,6 @@
 # Credbot
 
-Welcome to Credbot! This is a project XYZ
+Welcome to Credbot! This is a project developed by Emilie Zhang, Alexa Halim, and Jennifer Long in Wellesley College's CS366 course. 
 
 
 # User Study
